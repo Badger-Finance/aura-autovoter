@@ -89,7 +89,7 @@ def collect_and_vote(dry_run=True):
         Decimal(amount_of_locked_aura), target_pools_with_balances,
     )
     # TODO: Fix me after figuring out gauges
-    votes = voter.propose_voting_choices_stable()
+    votes = voter.propose_voting_choices()
     if not votes:
         send_message_to_discord("> Nothing to vote for now", username=BOT_USERNAME)
         return

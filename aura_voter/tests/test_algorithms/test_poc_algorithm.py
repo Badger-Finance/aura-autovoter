@@ -9,7 +9,6 @@ from aura_voter.voting_algorithms.poc_algorithm import POCVoter
 
 
 def test_poc_algorithm_happy_simple_data():
-    # TODO: When aura launches, rewrite this test with real test data
     locked_aura = Decimal(1000)
     balances = [
         PoolBalance(

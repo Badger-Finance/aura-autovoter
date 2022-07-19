@@ -32,7 +32,7 @@ def test_get_locked_aura_amount(mocker):
             )
         ))
     )
-    bve_cvx_locked = get_locked_graviaura_amount()
+    bve_cvx_locked = get_locked_graviaura_amount(block=123)
     assert bve_cvx_locked == balance / 10 ** decimals
 
 
@@ -60,7 +60,7 @@ def test_get_treasury_controlled_naked_graviaura(mocker):
             )
         ))
     )
-    treasury_owned_bvecvx = get_treasury_controlled_naked_graviaura()
+    treasury_owned_bvecvx = get_treasury_controlled_naked_graviaura(block=13123)
     assert treasury_owned_bvecvx == balance_mul_by_wallets / 10 ** decimals
 
 
@@ -98,6 +98,7 @@ def test_get_balancer_pool_token_balance(mocker):
     balance = get_balancer_pool_token_balance(
         target_token=target_token,
         balancer_pool_id="some_pool_id123123",
+        block=123,
     )
     assert balance.balance == pytest.approx(
         Decimal(
@@ -142,6 +143,7 @@ def test_get_balancer_pool_token_balance_no_token_balance(mocker):
         # Pass the token that is not in the pool
         target_token="0xfd05D3C7fe2924020620A8bE4961bBaA747e6305",
         balancer_pool_id="some_pool_id123123",
+        block=123,
     )
     assert balance is None
 

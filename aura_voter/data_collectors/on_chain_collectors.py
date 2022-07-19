@@ -15,19 +15,19 @@ from aura_voter.utils import get_abi
 from aura_voter.web3 import get_web3
 
 
-def get_locked_graviaura_amount() -> Decimal:
+def get_locked_graviaura_amount(block: int) -> Decimal:
     web3 = get_web3()
     abi = get_abi("AuraLocker")
     contract = web3.eth.contract(address=web3.toChecksumAddress(AURA_LOCKER_ADDRESS), abi=abi)
     vl_aura_amount = contract.functions.getVotes(
-        web3.toChecksumAddress(BADGER_VOTER_ADDRESS)).call()
+        web3.toChecksumAddress(BADGER_VOTER_ADDRESS)).call(block_identifier=block)
 
     return Decimal(vl_aura_amount) / Decimal(
         10 ** contract.functions.decimals().call()
     )
 
 
-def get_treasury_controlled_naked_graviaura() -> Decimal:
+def get_treasury_controlled_naked_graviaura(block: int) -> Decimal:
     """
     Iterate through every treasury wallet and accumulate graviAURA balances into one value.
     Note: this graviAURA is naked, meaning it's not deposited in any pool
@@ -41,14 +41,17 @@ def get_treasury_controlled_naked_graviaura() -> Decimal:
     for wallet in TREASURY_WALLETS:
         treasury_graviaura_controlled_amount += contract.functions.balanceOf(
             web3.toChecksumAddress(wallet)
-        ).call()
+        ).call(block_identifier=block)
     return Decimal(treasury_graviaura_controlled_amount) / Decimal(
         10 ** contract.functions.decimals().call()
     )
 
 
+# TODO: gravi_aura_amount = vlAURA from AuraLocker / graviaura.ppfs
+
+
 def get_balancer_pool_token_balance(
-        target_token: str, balancer_pool_id: str) -> Optional[PoolBalance]:
+        target_token: str, balancer_pool_id: str, block: int) -> Optional[PoolBalance]:
     """
     Returns token balance for a given balancer pool
     """
@@ -60,7 +63,11 @@ def get_balancer_pool_token_balance(
     token_contract = web3.eth.contract(
         address=web3.toChecksumAddress(target_token), abi=get_abi("ERC20")
     )
-    tokens, balances, _ = balancer_vault.functions.getPoolTokens(balancer_pool_id).call()
+    tokens, balances, _ = balancer_vault.functions.getPoolTokens(
+        balancer_pool_id
+    ).call(
+        block_identifier=block
+    )
     pool_token_balance = None
     for index, token in enumerate(tokens):
         if web3.toChecksumAddress(token) == web3.toChecksumAddress(target_token):

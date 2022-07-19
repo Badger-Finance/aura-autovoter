@@ -15,7 +15,7 @@ from aura_voter.utils import get_abi
 from aura_voter.web3 import get_web3
 
 
-def get_locked_graviaura_amount(block: int) -> Decimal:
+def get_locked_vlaura_amount(block: int) -> Decimal:
     web3 = get_web3()
     abi = get_abi("AuraLocker")
     contract = web3.eth.contract(address=web3.toChecksumAddress(AURA_LOCKER_ADDRESS), abi=abi)

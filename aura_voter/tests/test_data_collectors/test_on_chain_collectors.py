@@ -8,7 +8,7 @@ from aura_voter.constants import TREASURY_WALLETS
 from aura_voter.constants import ZERO_ADDRESS
 from aura_voter.data_collectors.on_chain_collectors import does_pool_have_gauge
 from aura_voter.data_collectors.on_chain_collectors import get_balancer_pool_token_balance
-from aura_voter.data_collectors.on_chain_collectors import get_locked_graviaura_amount
+from aura_voter.data_collectors.on_chain_collectors import get_locked_vlaura_amount
 from aura_voter.data_collectors.on_chain_collectors import get_treasury_controlled_naked_graviaura
 
 
@@ -32,7 +32,7 @@ def test_get_locked_aura_amount(mocker):
             )
         ))
     )
-    bve_cvx_locked = get_locked_graviaura_amount(block=123)
+    bve_cvx_locked = get_locked_vlaura_amount(block=123)
     assert bve_cvx_locked == balance / 10 ** decimals
 
 

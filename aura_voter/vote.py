@@ -15,7 +15,7 @@ from aura_voter.data_collectors.graph_collectors import get_all_aura_bribes
 from aura_voter.data_collectors.graph_collectors import get_all_balancer_pools
 from aura_voter.data_collectors.on_chain_collectors import does_pool_have_gauge
 from aura_voter.data_collectors.on_chain_collectors import get_balancer_pool_token_balance
-from aura_voter.data_collectors.on_chain_collectors import get_locked_graviaura_amount
+from aura_voter.data_collectors.on_chain_collectors import get_locked_vlaura_amount
 from aura_voter.data_collectors.on_chain_collectors import get_treasury_controlled_naked_graviaura
 from aura_voter.data_collectors.snapshot_collectors import get_current_hh_proposal_round
 from aura_voter.data_collectors.snapshot_collectors import get_gauge_weight_snapshot
@@ -50,7 +50,7 @@ def collect_and_vote(dry_run=True):
         f"> Fetched gauge proposal snapshot: {snapshot['id']}",
         username=BOT_USERNAME,
     )
-    amount_of_locked_aura = get_locked_graviaura_amount(snapshot_block)
+    amount_of_locked_aura = get_locked_vlaura_amount(snapshot_block)
     amount_of_treasury_owned_naked_graviaura = get_treasury_controlled_naked_graviaura(
         snapshot_block
     )

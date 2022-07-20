@@ -55,11 +55,11 @@ class POCVoter:
             if self.ALGORITHM_SETTINGS.regulations.get(pool_id):
                 # Decision made by council to subtract Y% as regulation on auraBAL pool
                 regulation_taken_voting_power += (
-                    pool.balance * self.ALGORITHM_SETTINGS.regulations[pool_id]
+                    pool.balance_aura * self.ALGORITHM_SETTINGS.regulations[pool_id]
                 )
-                voting_power = pool.balance - regulation_taken_voting_power
+                voting_power = pool.balance_aura - regulation_taken_voting_power
             else:
-                voting_power = pool.balance
+                voting_power = pool.balance_aura
             finalized_votes[POOL_ID_TO_NAME_MAP[pool_id]] = ((
                 self.ALGORITHM_SETTINGS.badger_pools_fixed_vote_weight * voting_power
             ) / self.badger_locked_aura) * Decimal(100)

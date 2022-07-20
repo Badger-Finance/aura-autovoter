@@ -32,14 +32,11 @@ def test_poc_algorithm_happy_simple_data():
     ]
     voter = POCVoter(locked_aura, balances)
     votes = voter.propose_voting_choices()
-    assert votes == {
-        '33/33/33 auraBAL/graviAURA/WETH': Decimal('33.76800000000000004973799150'),
-        'DIGG': Decimal('27.00000000000000066613381478'),
-        # 2 pools below are voted as a part of the regulation for auraBAL pool
-        'bb-a-USDT/bb-a-DAI/bb-a-USDC': Decimal('9.240000000000000435207425655'),
-        'MetaStable wstETH/WETH': Decimal('9.240000000000000435207425655'),
-        '80/20 BADGER/WBTC': Decimal('20.75199999999999841371334240')
-    }
+    assert votes == {'33/33/33 auraBAL/graviAURA/WETH': Decimal('34.82476162062310654454978017'),
+                     '80/20 BADGER/WBTC': Decimal('18.27195247242537317520887355'),
+                     'DIGG': Decimal('27.84495865188414766986031316'),
+                     'MetaStable wstETH/WETH': Decimal('9.529163627533686305190516560'),
+                     'bb-a-USDT/bb-a-DAI/bb-a-USDC': Decimal('9.529163627533686305190516560')}
     # Make sure all votes make 100% when summed up
     assert sum(votes.values()) == Decimal(100)
 
@@ -71,7 +68,8 @@ def test_poc_algorithm_calc_comparison(balance):
         )]
     )
     votes = voter.propose_voting_choices()
-    pool_expected_vote = ((balance * POCVoter.ALGORITHM_SETTINGS.badger_pools_fixed_vote_weight)
+    pool_expected_vote = ((balance * Decimal(PPFS / 10 ** 18) *
+                           POCVoter.ALGORITHM_SETTINGS.badger_pools_fixed_vote_weight)
                           / locked_aura) * Decimal(100)
     assert pool_expected_vote == votes[POOL_ID_TO_NAME_MAP[
         '0x8eb6c82c3081bbbd45dcac5afa631aac53478b7c000100000000000000000270'

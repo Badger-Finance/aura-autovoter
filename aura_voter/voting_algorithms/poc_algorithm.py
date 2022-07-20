@@ -60,6 +60,7 @@ class POCVoter:
                 voting_power = pool.balance_aura - regulation_taken_voting_power
             else:
                 voting_power = pool.balance_aura
+            # Each pool votes Y% of it's graviAURA balance for itself
             finalized_votes[POOL_ID_TO_NAME_MAP[pool_id]] = ((
                 self.ALGORITHM_SETTINGS.badger_pools_fixed_vote_weight * voting_power
             ) / self.badger_locked_aura) * Decimal(100)
@@ -71,6 +72,7 @@ class POCVoter:
                      (regulation_taken_voting_power * v_weight / self.badger_locked_aura)
                      * Decimal(100)
                 )
+        # TODO: Implement fees capture instead of voting will all naked vlAURA
         finalized_votes[BADGER_WBTC_POOL_NAME] = Decimal(100) - sum(finalized_votes.values())
         return finalized_votes
 

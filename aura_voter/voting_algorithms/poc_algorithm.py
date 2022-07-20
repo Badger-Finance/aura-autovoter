@@ -69,8 +69,8 @@ class POCVoter:
             # Regulation voting power votes for some ecosystem pools
             for pool_name, v_weight in self.ALGORITHM_SETTINGS.regulations_votes_to_comply.items():
                 finalized_votes[pool_name] = (
-                        (regulation_taken_voting_power * v_weight / self.badger_locked_aura)
-                        * Decimal(100)
+                    (regulation_taken_voting_power * v_weight / self.badger_locked_aura)
+                    * Decimal(100)
                 )
         # TODO: Implement fees capture instead of voting will all naked vlAURA
         finalized_votes[BADGER_WBTC_POOL_NAME] = Decimal(100) - sum(finalized_votes.values())

@@ -19,7 +19,6 @@ from aura_voter.data_collectors.on_chain_collectors import get_locked_vlaura_amo
 from aura_voter.data_collectors.on_chain_collectors import get_treasury_controlled_naked_graviaura
 from aura_voter.data_collectors.snapshot_collectors import get_current_hh_proposal_round
 from aura_voter.data_collectors.snapshot_collectors import get_gauge_weight_snapshot
-from aura_voter.data_collectors.snapshot_collectors import get_snapshot_by_id
 from aura_voter.discord import send_code_block_to_discord
 from aura_voter.discord import send_message_to_discord
 from aura_voter.utils import map_choice_id_to_pool_name
@@ -33,7 +32,7 @@ TEST_SNAPSHOT_ID = "0x515649bddfb0e0d637745e8654616b03b371bb444f90f327064e7eee60
 
 
 def collect_and_vote(dry_run=True):
-    snapshot = get_snapshot_by_id(TEST_SNAPSHOT_ID)
+    snapshot = get_gauge_weight_snapshot()
     if not snapshot:
         send_message_to_discord("> No active proposal found", username=BOT_USERNAME)
         return

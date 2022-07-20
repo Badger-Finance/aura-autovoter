@@ -9,6 +9,7 @@ from aura_voter.constants import GRAVIAURA
 from aura_voter.constants import POOL_ID_TO_NAME_MAP
 from aura_voter.constants import POOL_NAME_TO_ID_MAP
 from aura_voter.data_collectors import PoolBalance
+from aura_voter.tests import PPFS
 from aura_voter.voting_algorithms.poc_algorithm import POCVoter
 
 
@@ -18,11 +19,13 @@ def test_poc_algorithm_happy_simple_data():
         PoolBalance(
             pool_id=POOL_NAME_TO_ID_MAP[AURABAL_WETH_GRAVIAURA],
             balance=Decimal(560),
+            balance_aura=Decimal(560) * Decimal(PPFS / 10 ** 18),
             target_token=GRAVIAURA,
         ),
         PoolBalance(
             pool_id=POOL_NAME_TO_ID_MAP['DIGG'],
             balance=Decimal(300),
+            balance_aura=Decimal(300) * Decimal(PPFS / 10 ** 18),
             target_token=GRAVIAURA
         ),
 
@@ -63,6 +66,7 @@ def test_poc_algorithm_calc_comparison(balance):
         locked_aura, [PoolBalance(
             pool_id=POOL_NAME_TO_ID_MAP['DIGG'],
             balance=balance,
+            balance_aura=balance * Decimal(PPFS / 10 ** 18),
             target_token="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
         )]
     )

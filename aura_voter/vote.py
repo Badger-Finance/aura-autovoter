@@ -84,7 +84,6 @@ def collect_and_vote(dry_run=True):
     if bribes and current_proposal_index:
         bribes = get_bribes(snapshot, bribes, current_proposal_index)
         console.print(bribes)
-    # TODO: Before passing pools to algorithm we have to map it to the pool names on Snapsot
     voter = POCVoter(
         Decimal(amount_of_locked_aura), target_pools_with_balances,
     )

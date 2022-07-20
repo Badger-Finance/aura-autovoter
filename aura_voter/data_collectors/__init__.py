@@ -7,3 +7,4 @@ class PoolBalance:
     target_token: str
     pool_id: str
     balance: Decimal
+    balance_aura: Decimal

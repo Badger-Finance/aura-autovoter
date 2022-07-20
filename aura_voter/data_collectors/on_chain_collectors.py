@@ -71,12 +71,19 @@ def get_balancer_pool_token_balance(
     pool_token_balance = None
     for index, token in enumerate(tokens):
         if web3.toChecksumAddress(token) == web3.toChecksumAddress(target_token):
+            decimals = token_contract.functions.decimals().call()
+            balance = Decimal(balances[index]) / Decimal(
+                10 ** decimals
+            )
             pool_token_balance = PoolBalance(
                 target_token=target_token,
                 pool_id=balancer_pool_id,
-                balance=Decimal(balances[index]) / Decimal(
-                    10 ** token_contract.functions.decimals().call()
-                )
+                balance=balance,
+                balance_aura=balance * Decimal(
+                    token_contract.functions.getPricePerFullShare().call(
+                        block_identifier=block
+                    ) / 10 ** decimals
+                ),
             )
             break
     return pool_token_balance

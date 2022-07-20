@@ -10,6 +10,7 @@ from aura_voter.data_collectors.on_chain_collectors import does_pool_have_gauge
 from aura_voter.data_collectors.on_chain_collectors import get_balancer_pool_token_balance
 from aura_voter.data_collectors.on_chain_collectors import get_locked_vlaura_amount
 from aura_voter.data_collectors.on_chain_collectors import get_treasury_controlled_naked_graviaura
+from aura_voter.tests import PPFS
 
 
 def test_get_locked_aura_amount(mocker):
@@ -78,6 +79,9 @@ def test_get_balancer_pool_token_balance(mocker):
                             decimals=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=decimals)
                             )),
+                            getPricePerFullShare=MagicMock(return_value=MagicMock(
+                                call=MagicMock(return_value=PPFS)
+                            )),
                             getPoolTokens=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=(
                                     [
@@ -105,6 +109,9 @@ def test_get_balancer_pool_token_balance(mocker):
             target_token_balance / 10 ** decimals
         )
     )
+    assert balance.balance_aura == pytest.approx(
+        Decimal(target_token_balance / 10 ** decimals) * Decimal(PPFS / 10 ** decimals)
+    )
     assert balance.target_token == target_token
     assert balance.pool_id == 'some_pool_id123123'
 
@@ -121,6 +128,9 @@ def test_get_balancer_pool_token_balance_no_token_balance(mocker):
                         functions=MagicMock(
                             decimals=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=decimals)
+                            )),
+                            getPricePerFullShare=MagicMock(return_value=MagicMock(
+                                call=MagicMock(return_value=PPFS)
                             )),
                             getPoolTokens=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=(

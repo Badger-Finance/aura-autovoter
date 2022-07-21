@@ -55,13 +55,14 @@ def get_balancer_pool_token_balance(
     """
     Returns token balance for a given balancer pool
     """
+    abi = "GraviAuraToken" if target_token == GRAVIAURA else "ERC20"
     web3 = get_web3()
     balancer_vault = web3.eth.contract(
         address=web3.toChecksumAddress(BALANCER_VAULT_ADDRESS),
         abi=get_abi("BalancerVault")
     )
     token_contract = web3.eth.contract(
-        address=web3.toChecksumAddress(target_token), abi=get_abi("ERC20")
+        address=web3.toChecksumAddress(target_token), abi=get_abi(abi)
     )
     tokens, balances, _ = balancer_vault.functions.getPoolTokens(
         balancer_pool_id

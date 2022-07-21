@@ -5,7 +5,7 @@ metadata:
     labels:
         app: aura-autovoter
 spec:
-    schedule: '0 */5 * * 0-1,4-6'
+    schedule: '0 */1 * * 0-1,4-6'
 #    schedule: '* * * * *'
     startingDeadlineSeconds: 180
     suspend: false

@@ -3,7 +3,6 @@ from decimal import Decimal
 import pytest
 
 from aura_voter.constants import AURABAL_GRAVIAURA_WETH_POOL_NAME
-from aura_voter.constants import AURABAL_WETH_GRAVIAURA
 from aura_voter.constants import BADGER_WBTC_POOL_NAME
 from aura_voter.constants import GRAVIAURA
 from aura_voter.constants import POOL_ID_TO_NAME_MAP
@@ -18,7 +17,7 @@ def test_poc_algorithm_happy_simple_data():
     locked_aura = Decimal(1000)
     balances = [
         PoolBalance(
-            pool_id=POOL_NAME_TO_ID_MAP[AURABAL_WETH_GRAVIAURA],
+            pool_id=POOL_NAME_TO_ID_MAP[AURABAL_GRAVIAURA_WETH_POOL_NAME],
             balance=Decimal(560),
             balance_aura=Decimal(560) * Decimal(PPFS / 10 ** 18),
             target_token=GRAVIAURA,

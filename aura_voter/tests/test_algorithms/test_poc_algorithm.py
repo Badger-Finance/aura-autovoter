@@ -32,9 +32,9 @@ def test_poc_algorithm_happy_simple_data():
     ]
     voter = POCVoter(locked_aura, balances)
     votes = voter.propose_voting_choices()
-    assert votes == {'33/33/33 auraBAL/graviAURA/WETH': Decimal('34.82476162062310654454978017'),
+    assert votes == {'33/33/33 graviAURA/auraBAL/WETH': Decimal('34.82476162062310654454978017'),
+                     '40/40/20 WBTC/DIGG/graviAURA': Decimal('27.84495865188414766986031316'),
                      '80/20 BADGER/WBTC': Decimal('18.27195247242537317520887355'),
-                     WBTC_DIGG_GRAVIAURA: Decimal('27.84495865188414766986031316'),
                      'MetaStable wstETH/WETH': Decimal('9.529163627533686305190516560'),
                      'bb-a-USDT/bb-a-DAI/bb-a-USDC': Decimal('9.529163627533686305190516560')}
     # Make sure all votes make 100% when summed up

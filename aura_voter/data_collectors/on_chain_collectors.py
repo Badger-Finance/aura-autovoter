@@ -47,9 +47,6 @@ def get_treasury_controlled_naked_graviaura(block: int) -> Decimal:
     )
 
 
-# TODO: gravi_aura_amount = vlAURA from AuraLocker / graviaura.ppfs
-
-
 def get_balancer_pool_token_balance(
         target_token: str, balancer_pool_id: str, block: int) -> Optional[PoolBalance]:
     """

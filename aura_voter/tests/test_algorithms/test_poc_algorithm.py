@@ -8,6 +8,7 @@ from aura_voter.constants import BADGER_WBTC_POOL_NAME
 from aura_voter.constants import GRAVIAURA
 from aura_voter.constants import POOL_ID_TO_NAME_MAP
 from aura_voter.constants import POOL_NAME_TO_ID_MAP
+from aura_voter.constants import WBTC_DIGG_GRAVIAURA
 from aura_voter.data_collectors import PoolBalance
 from aura_voter.tests import PPFS
 from aura_voter.voting_algorithms.poc_algorithm import POCVoter
@@ -23,7 +24,7 @@ def test_poc_algorithm_happy_simple_data():
             target_token=GRAVIAURA,
         ),
         PoolBalance(
-            pool_id=POOL_NAME_TO_ID_MAP['DIGG'],
+            pool_id=POOL_NAME_TO_ID_MAP[WBTC_DIGG_GRAVIAURA],
             balance=Decimal(300),
             balance_aura=Decimal(300) * Decimal(PPFS / 10 ** 18),
             target_token=GRAVIAURA
@@ -34,7 +35,7 @@ def test_poc_algorithm_happy_simple_data():
     votes = voter.propose_voting_choices()
     assert votes == {'33/33/33 auraBAL/graviAURA/WETH': Decimal('34.82476162062310654454978017'),
                      '80/20 BADGER/WBTC': Decimal('18.27195247242537317520887355'),
-                     'DIGG': Decimal('27.84495865188414766986031316'),
+                     WBTC_DIGG_GRAVIAURA: Decimal('27.84495865188414766986031316'),
                      'MetaStable wstETH/WETH': Decimal('9.529163627533686305190516560'),
                      'bb-a-USDT/bb-a-DAI/bb-a-USDC': Decimal('9.529163627533686305190516560')}
     # Make sure all votes make 100% when summed up
@@ -61,7 +62,7 @@ def test_poc_algorithm_calc_comparison(balance):
     locked_aura = Decimal(1000)
     voter = POCVoter(
         locked_aura, [PoolBalance(
-            pool_id=POOL_NAME_TO_ID_MAP['DIGG'],
+            pool_id=POOL_NAME_TO_ID_MAP[WBTC_DIGG_GRAVIAURA],
             balance=balance,
             balance_aura=balance * Decimal(PPFS / 10 ** 18),
             target_token="0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",

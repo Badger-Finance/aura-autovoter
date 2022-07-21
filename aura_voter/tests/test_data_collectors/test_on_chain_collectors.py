@@ -8,8 +8,9 @@ from aura_voter.constants import TREASURY_WALLETS
 from aura_voter.constants import ZERO_ADDRESS
 from aura_voter.data_collectors.on_chain_collectors import does_pool_have_gauge
 from aura_voter.data_collectors.on_chain_collectors import get_balancer_pool_token_balance
-from aura_voter.data_collectors.on_chain_collectors import get_locked_graviaura_amount
+from aura_voter.data_collectors.on_chain_collectors import get_locked_vlaura_amount
 from aura_voter.data_collectors.on_chain_collectors import get_treasury_controlled_naked_graviaura
+from aura_voter.tests import PPFS
 
 
 def test_get_locked_aura_amount(mocker):
@@ -32,7 +33,7 @@ def test_get_locked_aura_amount(mocker):
             )
         ))
     )
-    bve_cvx_locked = get_locked_graviaura_amount()
+    bve_cvx_locked = get_locked_vlaura_amount(block=123)
     assert bve_cvx_locked == balance / 10 ** decimals
 
 
@@ -60,7 +61,7 @@ def test_get_treasury_controlled_naked_graviaura(mocker):
             )
         ))
     )
-    treasury_owned_bvecvx = get_treasury_controlled_naked_graviaura()
+    treasury_owned_bvecvx = get_treasury_controlled_naked_graviaura(block=13123)
     assert treasury_owned_bvecvx == balance_mul_by_wallets / 10 ** decimals
 
 
@@ -77,6 +78,9 @@ def test_get_balancer_pool_token_balance(mocker):
                         functions=MagicMock(
                             decimals=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=decimals)
+                            )),
+                            getPricePerFullShare=MagicMock(return_value=MagicMock(
+                                call=MagicMock(return_value=PPFS)
                             )),
                             getPoolTokens=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=(
@@ -98,11 +102,15 @@ def test_get_balancer_pool_token_balance(mocker):
     balance = get_balancer_pool_token_balance(
         target_token=target_token,
         balancer_pool_id="some_pool_id123123",
+        block=123,
     )
     assert balance.balance == pytest.approx(
         Decimal(
             target_token_balance / 10 ** decimals
         )
+    )
+    assert balance.balance_aura == pytest.approx(
+        Decimal(target_token_balance / 10 ** decimals) * Decimal(PPFS / 10 ** decimals)
     )
     assert balance.target_token == target_token
     assert balance.pool_id == 'some_pool_id123123'
@@ -120,6 +128,9 @@ def test_get_balancer_pool_token_balance_no_token_balance(mocker):
                         functions=MagicMock(
                             decimals=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=decimals)
+                            )),
+                            getPricePerFullShare=MagicMock(return_value=MagicMock(
+                                call=MagicMock(return_value=PPFS)
                             )),
                             getPoolTokens=MagicMock(return_value=MagicMock(
                                 call=MagicMock(return_value=(
@@ -142,6 +153,7 @@ def test_get_balancer_pool_token_balance_no_token_balance(mocker):
         # Pass the token that is not in the pool
         target_token="0xfd05D3C7fe2924020620A8bE4961bBaA747e6305",
         balancer_pool_id="some_pool_id123123",
+        block=123,
     )
     assert balance is None
 

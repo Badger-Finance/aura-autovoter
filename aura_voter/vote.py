@@ -15,7 +15,7 @@ from aura_voter.data_collectors.graph_collectors import get_all_aura_bribes
 from aura_voter.data_collectors.graph_collectors import get_all_balancer_pools
 from aura_voter.data_collectors.on_chain_collectors import does_pool_have_gauge
 from aura_voter.data_collectors.on_chain_collectors import get_balancer_pool_token_balance
-from aura_voter.data_collectors.on_chain_collectors import get_locked_graviaura_amount
+from aura_voter.data_collectors.on_chain_collectors import get_locked_vlaura_amount
 from aura_voter.data_collectors.on_chain_collectors import get_treasury_controlled_naked_graviaura
 from aura_voter.data_collectors.snapshot_collectors import get_current_hh_proposal_round
 from aura_voter.data_collectors.snapshot_collectors import get_gauge_weight_snapshot
@@ -28,21 +28,31 @@ from aura_voter.voting_algorithms.poc_algorithm import POCVoter
 console = Console(width=100000, height=10000)
 
 
+TEST_SNAPSHOT_ID = "0x515649bddfb0e0d637745e8654616b03b371bb444f90f327064e7eee6052aff8"
+
+
 def collect_and_vote(dry_run=True):
     snapshot = get_gauge_weight_snapshot()
     if not snapshot:
         send_message_to_discord("> No active proposal found", username=BOT_USERNAME)
         return
     send_message_to_discord(
-        f"> Fetched gauge proposal snapshot: {snapshot['id']}",
-        username=BOT_USERNAME,
-    )
-    send_message_to_discord(
         "🗳️🗳️🗳️🗳️ New voting round AURA 🗳️🗳️🗳️🗳️",
         username=BOT_USERNAME
     )
-    amount_of_locked_aura = get_locked_graviaura_amount()
-    amount_of_treasury_owned_naked_graviaura = get_treasury_controlled_naked_graviaura()
+    snapshot_block = int(snapshot['snapshot'])
+    send_message_to_discord(
+        f"> Snapshot block is {snapshot_block}",
+        username=BOT_USERNAME,
+    )
+    send_message_to_discord(
+        f"> Fetched gauge proposal snapshot: {snapshot['id']}",
+        username=BOT_USERNAME,
+    )
+    amount_of_locked_aura = get_locked_vlaura_amount(snapshot_block)
+    amount_of_treasury_owned_naked_graviaura = get_treasury_controlled_naked_graviaura(
+        snapshot_block
+    )
     send_message_to_discord(
         f"> Locked AURA amount is: {round(amount_of_locked_aura, 2)}",
         username=BOT_USERNAME
@@ -64,7 +74,7 @@ def collect_and_vote(dry_run=True):
     target_pools_with_balances = []
     for pool in pools_with_gauges:
         target_pools_with_balances.append(
-            get_balancer_pool_token_balance(GRAVIAURA, pool['id'])
+            get_balancer_pool_token_balance(GRAVIAURA, pool['id'], snapshot_block)
         )
     # Get all aura bribes
     bribes = get_all_aura_bribes()
@@ -73,12 +83,11 @@ def collect_and_vote(dry_run=True):
     if bribes and current_proposal_index:
         bribes = get_bribes(snapshot, bribes, current_proposal_index)
         console.print(bribes)
-    # TODO: Before passing pools to algorithm we have to map it to the pool names on Snapsot
     voter = POCVoter(
         Decimal(amount_of_locked_aura), target_pools_with_balances,
     )
     # TODO: Fix me after figuring out gauges
-    votes = voter.propose_voting_choices_stable()
+    votes = voter.propose_voting_choices()
     if not votes:
         send_message_to_discord("> Nothing to vote for now", username=BOT_USERNAME)
         return

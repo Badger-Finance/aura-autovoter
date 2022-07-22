@@ -1,3 +1,4 @@
+from copy import deepcopy
 from decimal import Decimal
 from unittest.mock import MagicMock
 
@@ -226,6 +227,20 @@ def test_calculate_dollar_vlaura_values():
         'totals_in_$': Decimal('717.70983'),
         '$/vlAURA': Decimal('0.05301878113117229370856000411')
     }
+
+
+def test_calculate_dollar_vlaura_values_zero_div_case():
+    scores = deepcopy(ACTIVE_PROPOSAL_DATA['proposals'][0]['scores'])
+    zero_scores = []
+    for _ in scores:
+        zero_scores.append(0.0)
+    final_pool_info = _calculate_dollar_vlaura_values(
+        total_bribes_per_pool=EXPECTED_POOL_TOTALS_IN_DOLLAR,
+        choices=ACTIVE_PROPOSAL_DATA['proposals'][0]['choices'],
+        scores=zero_scores
+    )
+    for pool, bribes_info in final_pool_info.items():
+        assert bribes_info['$/vlAURA'] is None
 
 
 def test_calculate_dollar_vlaura_values_empty():

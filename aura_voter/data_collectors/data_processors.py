@@ -104,7 +104,7 @@ def _calculate_dollar_value_of_bribes_per_pool(
                     web3.toChecksumAddress(bribe['token'])), abi=get_abi("ERC20")
             )
             token_amount = (
-                Decimal(bribe['amount']) / 10 ** token_contract.functions.decimals().call()
+                    Decimal(bribe['amount']) / 10 ** token_contract.functions.decimals().call()
             )
             token_price = token_prices.get(bribe['token'])
             if not token_price:
@@ -123,7 +123,7 @@ def _calculate_dollar_value_of_bribes_per_pool(
 
 
 def _calculate_dollar_vlaura_values(
-        total_bribes_per_pool: Dict[str, Dict], choices: List[str], scores: List[str],
+        total_bribes_per_pool: Dict[str, Dict], choices: List[str], scores: List[float],
 ) -> Optional[Dict[str, Dict]]:
     """
     Final function in the pipeline that calculated $/vlAURA mostly
@@ -136,7 +136,9 @@ def _calculate_dollar_vlaura_values(
         pool_final_bribes_info[pool] = {
             'tokens': bribes_info['tokens'],
             'totals_in_$': bribes_info['totals'],
+            # Make sure to handle zero div error when pool has no votes
             '$/vlAURA': bribes_info['totals'] / pools_voting_power[pool]
+            if pools_voting_power[pool] != Decimal(0) else None
         }
     return pool_final_bribes_info
 

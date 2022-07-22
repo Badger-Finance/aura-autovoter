@@ -104,7 +104,7 @@ def _calculate_dollar_value_of_bribes_per_pool(
                     web3.toChecksumAddress(bribe['token'])), abi=get_abi("ERC20")
             )
             token_amount = (
-                    Decimal(bribe['amount']) / 10 ** token_contract.functions.decimals().call()
+                Decimal(bribe['amount']) / 10 ** token_contract.functions.decimals().call()
             )
             token_price = token_prices.get(bribe['token'])
             if not token_price:

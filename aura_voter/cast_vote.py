@@ -13,7 +13,7 @@ from aura_voter.constants import AURA_VOTER_SECRET_KEY
 from aura_voter.constants import BADGER_VOTER_ADDRESS
 from aura_voter.constants import REGION
 from aura_voter.constants import SNAPSHOT_VOTE_API
-from aura_voter.rich_logger import logger
+from badger_voter_sdk.rich_logger import logger
 from aura_voter.utils import sign_message
 
 

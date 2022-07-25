@@ -10,7 +10,7 @@ from web3 import Web3
 
 from aura_voter.constants import CG_ETHEREUM_CHAIN_ID
 from aura_voter.constants import CURRENCY_USD
-from aura_voter.rich_logger import logger
+from badger_voter_sdk.rich_logger import logger
 from aura_voter.utils import extract_pools_voting_power
 from aura_voter.utils import get_abi
 from aura_voter.utils import map_choice_id_to_pool_name

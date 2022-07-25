@@ -1,5 +1,6 @@
 import os
 
+from badger_voter_sdk.rich_logger import logger
 from discord import InvalidArgument
 from discord import RequestsWebhookAdapter
 from discord import Webhook
@@ -8,7 +9,6 @@ from typing import Optional
 from badger_voter_sdk.aws import get_secret
 from aura_voter.constants import DISCORD_WEBHOOK_SECRET_ID
 from aura_voter.constants import DISCORD_WEBHOOK_SECRET_KEY
-from aura_voter.rich_logger import logger
 
 
 def send_code_block_to_discord(

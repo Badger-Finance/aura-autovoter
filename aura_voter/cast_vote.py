@@ -6,7 +6,7 @@ import requests
 import simplejson as json
 from web3 import Web3
 
-from aura_voter.aws import get_secret
+from badger_voter_sdk.aws import get_secret
 from aura_voter.constants import ASSUME_ROLE_ARN
 from aura_voter.constants import AURA_VOTER_SECRET_ID
 from aura_voter.constants import AURA_VOTER_SECRET_KEY

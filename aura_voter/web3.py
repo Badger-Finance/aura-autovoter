@@ -2,7 +2,7 @@ import os
 
 from web3 import Web3
 
-from aura_voter.aws import get_secret
+from badger_voter_sdk.aws import get_secret
 from aura_voter.constants import ETHNODEURL_SECRET_ID
 from aura_voter.constants import ETHNODEURL_SECRET_KEY
 

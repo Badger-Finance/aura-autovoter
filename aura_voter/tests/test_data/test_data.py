@@ -49,7 +49,7 @@ ACTIVE_PROPOSAL_DATA = {
             "50/50 DFX/WETH",
             "Stable B-80BAL-20WETH/sdBal",
             "Stable FIAT/DAI/USDC",
-            "33/33/33 auraBAL/graviAURA/WETH",
+            "33/33/33 graviAURA/auraBAL/WETH",
             "a-33/33/33 DPX/RDPX/WETH",
             "a-33/33/33 WBTC/WETH/USDC",
             "a-Stable VST/DAI/USDT/USDC",

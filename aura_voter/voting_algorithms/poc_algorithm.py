@@ -9,6 +9,7 @@ from aura_voter.constants import BOOBA_TRI_STABLE
 from aura_voter.constants import META_WSTETH_WETH
 from aura_voter.constants import POOL_ID_TO_NAME_MAP
 from aura_voter.constants import POOL_NAME_TO_ID_MAP
+from aura_voter.constants import WMATIC_STMATIC
 from aura_voter.data_collectors import PoolBalance
 
 
@@ -82,6 +83,8 @@ class POCVoter:
         Stub method to vote 100% for ecosystem pool
         """
         return {
-            BADGER_WBTC_POOL_NAME: Decimal(66.67),
-            AURABAL_GRAVIAURA_WETH_POOL_NAME: Decimal(33.33)
+            BADGER_WBTC_POOL_NAME: Decimal(40.26),
+            AURABAL_GRAVIAURA_WETH_POOL_NAME: Decimal(17.21),
+            META_WSTETH_WETH: Decimal(34.02),
+            WMATIC_STMATIC: Decimal(8.51)
         }

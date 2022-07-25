@@ -1,19 +1,20 @@
+import os
 from collections import defaultdict
 from decimal import Decimal
 from typing import Dict
 from typing import List
 from typing import Optional
 
+from badger_voter_sdk.rich_logger import logger
+from badger_voter_sdk.web3 import get_web3
 from pycoingecko import CoinGeckoAPI
 from web3 import Web3
 
 from aura_voter.constants import CG_ETHEREUM_CHAIN_ID
 from aura_voter.constants import CURRENCY_USD
-from aura_voter.rich_logger import logger
 from aura_voter.utils import extract_pools_voting_power
 from aura_voter.utils import get_abi
 from aura_voter.utils import map_choice_id_to_pool_name
-from aura_voter.web3 import get_web3
 
 
 def extract_pools_with_target_token_included(
@@ -95,7 +96,7 @@ def _calculate_dollar_value_of_bribes_per_pool(
     if not bribes_filtered or not token_prices:
         logger.warning("Didn't find bribes for current voting round or token prices are missing")
         return
-    web3 = get_web3()
+    web3 = get_web3(os.getenv("ETHNODEURL"))
     pool_bribe_totals = defaultdict(dict)
     for pool, bribes in bribes_filtered.items():
         for bribe in bribes:

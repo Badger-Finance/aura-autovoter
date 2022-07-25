@@ -15,7 +15,7 @@ from eth_account.messages import SignableMessage
 from eth_utils.curried import to_text
 from hexbytes import HexBytes
 
-from aura_voter.web3 import get_web3
+from badger_voter_sdk.web3 import get_web3
 
 
 def get_abi(contract_name: str) -> Union[Dict, List[Dict]]:
@@ -50,7 +50,7 @@ def sign_message(message: Dict, private_key: str) -> str:
     """
     EIP712 message signing
     """
-    web3 = get_web3()
+    web3 = get_web3(os.getenv("ETHNODEURL"))
     encoded_data = _encode_structured_data(primitive=message)
     signed_message = web3.eth.account.sign_message(encoded_data, private_key)
     return signed_message['signature'].hex()

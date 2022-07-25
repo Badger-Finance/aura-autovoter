@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 from typing import Dict
 from typing import Optional
@@ -12,7 +13,7 @@ from aura_voter.constants import SNAPSHOT_STATE_ACTIVE
 from aura_voter.data_collectors.transports import make_gql_client
 from gql.transport.requests import log
 
-from aura_voter.web3 import get_web3
+from badger_voter_sdk.web3 import get_web3
 
 log.setLevel(logging.WARNING)
 
@@ -119,7 +120,7 @@ def get_gauge_weight_snapshot() -> Optional[Dict]:
     gauge voting proposal. If not found, returns None
     """
     client = make_gql_client(SNAPSHOT_GQL_API_URL)
-    web3 = get_web3()
+    web3 = get_web3(os.getenv("ETHNODEURL"))
     limit = 100
     offset = 0
     while True:

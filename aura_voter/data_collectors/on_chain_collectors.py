@@ -1,3 +1,4 @@
+import os
 from decimal import Decimal
 from typing import Optional
 
@@ -12,11 +13,11 @@ from aura_voter.constants import TREASURY_WALLETS
 from aura_voter.constants import ZERO_ADDRESS
 from aura_voter.data_collectors import PoolBalance
 from aura_voter.utils import get_abi
-from aura_voter.web3 import get_web3
+from badger_voter_sdk.web3 import get_web3
 
 
 def get_locked_vlaura_amount(block: int) -> Decimal:
-    web3 = get_web3()
+    web3 = get_web3(os.getenv("ETHNODEURL"))
     abi = get_abi("AuraLocker")
     contract = web3.eth.contract(address=web3.toChecksumAddress(AURA_LOCKER_ADDRESS), abi=abi)
     vl_aura_amount = contract.functions.getVotes(
@@ -32,7 +33,7 @@ def get_treasury_controlled_naked_graviaura(block: int) -> Decimal:
     Iterate through every treasury wallet and accumulate graviAURA balances into one value.
     Note: this graviAURA is naked, meaning it's not deposited in any pool
     """
-    web3 = get_web3()
+    web3 = get_web3(os.getenv("ETHNODEURL"))
     abi = get_abi("ERC20")
     contract = web3.eth.contract(address=web3.toChecksumAddress(GRAVIAURA), abi=abi)
     treasury_graviaura_controlled_amount = 0.0
@@ -53,7 +54,7 @@ def get_balancer_pool_token_balance(
     Returns token balance for a given balancer pool
     """
     abi = "GraviAuraToken" if target_token == GRAVIAURA else "ERC20"
-    web3 = get_web3()
+    web3 = get_web3(os.getenv("ETHNODEURL"))
     balancer_vault = web3.eth.contract(
         address=web3.toChecksumAddress(BALANCER_VAULT_ADDRESS),
         abi=get_abi("BalancerVault")
@@ -91,7 +92,7 @@ def does_pool_have_gauge(balancer_pool_id: str) -> bool:
     """
     Helper func to determine if balancer pool has gauge and we can vote for it
     """
-    web3 = get_web3()
+    web3 = get_web3(os.getenv("ETHNODEURL"))
     if is_address(balancer_pool_id):
         raise ValueError("balancer_pool_id should not be an address")
     balancer_vault = web3.eth.contract(

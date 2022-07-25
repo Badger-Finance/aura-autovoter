@@ -45,10 +45,16 @@ def test_poc_algorithm_stable_vote():
     voter = POCVoter(Decimal(1000), [])
     stable_choices = voter.propose_voting_choices_stable()
     assert stable_choices == {
-        BADGER_WBTC_POOL_NAME: Decimal(66.67),
-        AURABAL_GRAVIAURA_WETH_POOL_NAME: Decimal(33.33)
+        '33/33/33 graviAURA/auraBAL/WETH': Decimal(
+            '17.21000000000000085265128291212022304534912109375'),
+        '80/20 BADGER/WBTC': Decimal(
+            '40.25999999999999801048033987171947956085205078125'),
+        'MetaStable wstETH/WETH': Decimal(
+            '34.02000000000000312638803734444081783294677734375'),
+        'p-MetaStable WMATIC/stMATIC': Decimal(
+            '8.5099999999999997868371792719699442386627197265625')
     }
-    assert sum(stable_choices.values()) == Decimal(100)
+    assert sum(stable_choices.values()) == pytest.approx(Decimal(100))
 
 
 @pytest.mark.parametrize(
